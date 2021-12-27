@@ -1,0 +1,37 @@
+    # Descrierea design-ului ales
+- Clasa Database este un Singleton construit prin lazy instantiation si reprezinta baza de date in care in care vom stoca toate
+datele specifice problemei prin intermediul unor liste de: actori, filme, seriale, useri si actiuni.
+- Aceste liste vor contine niste obiecte pe care le-am definit:
+    -> Actor: o clasa care descrie un actor(nume, descrierea carierei, filmografie, premii).
+    -> Film: clasa care mosteneste clasa de tip Video si care descrie un film(nume/titlu serial, durata, lista cu actorii
+    ce au jucat in el, anul aparitiei, lista de genuri, lista de rating-uri, numarul de aparitii in listele de favorite ale
+    utilizatorilor si numarul de vizualizari).
+    -> Serial: clasa care mosteneste tot clasa de tip Video si care descrie un serial(aceleasi caracteristici ca la un film,
+    doar ca aici avem si un numar de sezoane, respectiv o lista de sezoane, care la randul lor sunt si ele niste obiecte
+    descrise prin clasa Season care contine campuri prin care se precizeaza numarul sezonului, durata acestuia si o lista
+    de rating-uri oferite utilizatori).
+    -> Video: clasa construita pentru a putea extinde clasele film si serial din ea, care la baza sunt de fapt tot niste
+    video-uri doar ca au unele caracteristici in plus fata de acesta.
+    -> User: clasa care descrie un utilizator prin intermediul unor campuri precum username, subscription(tipul de abonament),
+    istoricul utilizatorului(toate filmele si serialele pe care le-a vazut si de cate ori le-a urmarit pe fiecare in parte),
+    o lista de favorite in care se retin titlurile serialelor sau filmelor favorite ale utilizatorului si rating-urile
+    oferite acestuia filmelor sau serialelor.
+    -> ActionInputData: clasa oferita in scheletul proiectului pentru care nu am definit alta clasa asemanatoare a mea
+    deoarece m-am folosit doar de informatiile dintr-un astfel de obiect, nu modificam nimic in cadrul lui.
+- Am definit niste clase separate specifice fiecarui tip de actiune in parte:Query, Recommendation sau Command; care sa aiba
+cate un camp de tip JSONObject care sa reprezinte rezultatul actiunii respective. Fiecare astfel de clasa are niste metode
+specifice ce ne ajuta sa aflam rezultatul actiunii ce trebuie realizata.
+- De asemenea, pentru a transfera informatiile din clasele primite in schelet in clasele mele am definit o clasa statica denumita
+sugestiv Transfer, in care am definit niste metode statice(la baza niste copy constructori) cu ajutorul carora faceam copii
+elementelor din clasa Input(actori, filme, seriale si useri), copii pe care le adaugam in clasa mea Database.
+- Pentru a putea sorta rezultatele Query-urilor am facut o clasa statica denumita Sortings care contine doar sortari de diferite
+obiecte(useri, actori si video-uri). Am ales sa fac aceasta clasa separata cu sortari pentru a nu aglomera foarte mult codul
+din clase precum Command, Query sau Recommendation si pentru a avea un design usor de inteles(mai multe obiecte cu diferite
+functionalitati, un obiect de tip Command care trebuie sa realizeze o actiune de tip command view, de adaugare in favorite
+sau de oferire a unui rating, un obiect de tip Query care realizeaza o actiune de tip query ce cauta prin baza de date anumite
+entitati ce indeplinesc unele proprietati descrise in obiectul ActionInputData, un obiect de tip Recommendation care realizeaza
+o actiune de tip recomandare a unui video catre un anumit utilizator).
+- Am ales sa face aceste clase separate cu sortari si transferuri de informatii tocmai pentru a nu aglomoera foarte mult codul
+din clase precum Database, Command, Query sau Recommendation si pentru a avea un design destul aerisit si impartit pe task-uri:
+cate un obiect diferit pentru fiecare task(un obiect care sa se ocupe de sortari, un obiect care sa se ocupe de transferurile de
+informatii dintr-o baza de date-Input in alta baza de date-Database).
